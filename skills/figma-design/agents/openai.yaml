@@ -1,0 +1,4 @@
+interface:
+  display_name: "视觉稿到Figma系统设计"
+  short_description: "从视觉稿提炼规范与素材，构建组件，经样板确认后还原页面并扩展系统设计"
+  default_prompt: "使用 $figma-design，分析我提供的视觉稿及素材，建立设计规范和代表组件，确认后还原完整样板页，再按原型或需求扩展系统并验收。"
