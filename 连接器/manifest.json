@@ -1,0 +1,22 @@
+{
+  "name": "Figma Design Skill Connector",
+  "id": "figma-design-skill-local",
+  "api": "1.0.0",
+  "main": "执行器.js",
+  "ui": "面板.html",
+  "editorType": [
+    "figma"
+  ],
+  "documentAccess": "dynamic-page",
+  "networkAccess": {
+    "allowedDomains": [
+      "http://localhost:17658",
+      "http://localhost:17659"
+    ],
+    "devAllowedDomains": [
+      "http://localhost:17658",
+      "http://localhost:17659"
+    ],
+    "reasoning": "Connect to the user-controlled local bridge with a session token."
+  }
+}

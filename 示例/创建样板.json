@@ -1,0 +1,11 @@
+{
+  "target": "替换为clients返回的id",
+  "batch": {
+    "expectedPageId": "替换为clients返回的pageId",
+    "operations": [
+      {"action":"upsert","key":"public-demo/card","type":"FRAME","props":{"name":"公开示例／样板卡片","x":0,"y":0,"width":480,"height":240,"cornerRadius":16,"fills":[{"type":"SOLID","color":{"r":0.94,"g":0.97,"b":1}}]}},
+      {"action":"upsert","key":"public-demo/title","type":"TEXT","parent":"public-demo/card","props":{"name":"标题","x":24,"y":24,"fontName":{"family":"Inter","style":"Bold"},"fontSize":24,"characters":"Visual to Figma","textAutoResize":"WIDTH_AND_HEIGHT","fills":[{"type":"SOLID","color":{"r":0.09,"g":0.22,"b":0.4}}]}},
+      {"action":"export","target":"public-demo/card","scale":1}
+    ]
+  }
+}

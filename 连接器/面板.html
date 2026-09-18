@@ -1,0 +1,14 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><style>
+*{box-sizing:border-box}body{margin:0;padding:20px;font:13px/1.6 system-ui,sans-serif;color:var(--figma-color-text,#173765);background:var(--figma-color-bg,#fff)}h1{font-size:18px;margin:0 0 8px}p{margin:8px 0}label{display:block;margin-top:12px}input,select{width:100%;padding:8px;font:inherit;border:1px solid #b9c9df;border-radius:6px}button{margin:14px 8px 8px 0;padding:8px 20px;border:0;border-radius:6px;background:#1677ff;color:#fff}#stop{background:#eaf1fa;color:#173765}#target{font:11px monospace;overflow-wrap:anywhere}#log{white-space:pre-wrap;font:11px/1.5 monospace;max-height:110px;overflow:auto}small{color:#64748b}</style>
+<h1>Figma Design Skill</h1><p>本地连接器 · <strong id="state">未连接</strong></p>
+<label for="port">桥接端口</label><select id="port"><option>17658</option><option>17659</option></select>
+<label for="token">桥接服务的会话口令</label><input id="token" type="password" autocomplete="off" placeholder="粘贴本机终端显示的口令">
+<small>口令只用于本次连接，不保存。连接后，获知口令的本机客户端可发送读写指令。</small>
+<div><button id="start">连接</button><button id="stop">停止</button></div><div id="target"></div><pre id="log"></pre>
+<script>
+const el=id=>document.getElementById(id);
+el('start').onclick=()=>parent.postMessage({pluginMessage:{type:'start',port:Number(el('port').value),token:el('token').value.trim()}},'*');
+el('stop').onclick=()=>parent.postMessage({pluginMessage:{type:'stop'}},'*');
+window.onmessage=e=>{const m=e.data.pluginMessage;if(!m)return;if(m.type==='status'){el('state').textContent=m.busy?'执行中':m.running?'轮询中':'已停止';el('target').textContent='目标: '+m.client+' | 页面: '+m.page;}if(m.type==='log')el('log').textContent=(m.line+'\n'+el('log').textContent).slice(0,6000);};
+parent.postMessage({pluginMessage:{type:'getState'}},'*');
+</script></html>

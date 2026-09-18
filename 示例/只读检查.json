@@ -1,0 +1,7 @@
+{
+  "target": "替换为clients返回的id",
+  "batch": {
+    "expectedPageId": "替换为clients返回的pageId",
+    "operations": [{"action": "capabilities"}, {"action": "page"}]
+  }
+}

@@ -5,3 +5,5 @@
 .DS_Store
 Thumbs.db
 __pycache__/
+node_modules/
+样板结果.json

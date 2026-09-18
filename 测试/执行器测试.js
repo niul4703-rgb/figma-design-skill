@@ -1,0 +1,23 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const vm = require('node:vm');
+const path = require('node:path');
+const source = fs.readFileSync(path.join(__dirname,'../连接器/执行器.js'),'utf8');
+const api = require('../连接器/执行器.js');
+assert.throws(()=>api.validateBatch({operations:[]}));
+assert.throws(()=>api.validateBatch({operations:[{action:'eval'}]}));
+assert.throws(()=>api.validateBatch({operations:[{action:'upsert',type:'FRAME',key:'a'},{action:'upsert',type:'FRAME',key:'a'}]}));
+api.validateBatch({operations:[{action:'page'},{action:'capabilities'}]});
+(async()=>{
+ const page={id:'1:2',name:'test',type:'PAGE',children:[],findAll:()=>[]};
+ const context={module:{exports:{}},Set,Map,Promise,Uint8Array,setTimeout};
+ vm.createContext(context);vm.runInContext(source,context);
+ context.figma={currentPage:page,commitUndo(){},fileKey:'fake-file'};
+ await assert.rejects(context.module.exports.execute({expectedPageId:'wrong',operations:[{action:'page'}]}));
+ const result=await context.module.exports.execute({expectedPageId:'1:2',operations:[{action:'capabilities'},{action:'inspect',target:'id:missing'}]});
+ assert.equal(result.failed,1);assert.equal(result.results[0].ok,true);assert.equal(result.results[1].ok,false);
+ const nodes=[{getPluginData:()=> 'duplicate'},{getPluginData:()=> 'duplicate'}];
+ const index=api.makeIndex({findAll(fn){nodes.forEach(fn)}});
+ await assert.rejects(api.resolve('duplicate',index,page),/重复key/);
+ console.log('Executor tests passed (mock Figma host, not desktop integration)');
+})().catch(e=>{console.error(e);process.exitCode=1});
